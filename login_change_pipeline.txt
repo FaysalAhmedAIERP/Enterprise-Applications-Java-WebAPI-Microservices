@@ -1,0 +1,43 @@
+Tutorial 4 - Login Module Change Request Pipeline
+
+Monolithic Application:
+
+Change Request: Modify Login Module
+        |
+        v
+Change Login Code
+        |
+        v
+Build Entire Application
+        |
+        v
+Test Entire Application
+        |
+        v
+Package Entire Application
+        |
+        v
+Deploy Entire Application
+        |
+        v
+Monitor Entire Application
+
+
+Microservices Application:
+
+Change Request: Modify Authentication Service
+        |
+        v
+Change Authentication Service Code
+        |
+        v
+Build Authentication Service Only
+        |
+        v
+Test Authentication Service Only
+        |
+        v
+Deploy Authentication Service Only
+        |
+        v
+Monitor Authentication Service Independently

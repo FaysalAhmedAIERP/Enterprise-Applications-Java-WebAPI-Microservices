@@ -1,0 +1,327 @@
+Tutorial 8 - Distributed Denial-of-Service (DDoS) Attacks and Protection
+
+Introduction
+
+A Distributed Denial-of-Service (DDoS) attack is a cyberattack that attempts to make an online service, website, application, server, or network unavailable to legitimate users. The attacker does this by generating an extremely large volume of malicious traffic or resource-consuming requests from many distributed devices at the same time.
+
+Unlike a traditional Denial-of-Service (DoS) attack, which may come from a single source, a DDoS attack normally uses many devices distributed across different locations. These devices may include compromised computers, servers, smartphones, routers, or Internet of Things (IoT) devices. A large network of compromised devices controlled by an attacker is commonly known as a botnet.
+
+The main objective of a DDoS attack is to exhaust one or more system resources. These resources may include internet bandwidth, server CPU, memory, connection tables, application threads, database connections, or other infrastructure capacity. When these resources become overloaded, legitimate users may experience very slow response times, errors, connection failures, or complete service unavailability.
+
+How a DDoS Attack Works
+
+A DDoS attack usually begins when an attacker compromises a large number of internet-connected devices. Malware or other malicious techniques may be used to gain control of these devices. Once compromised, the devices can be remotely controlled as part of a botnet.
+
+The attacker then instructs the botnet to send a large number of requests or packets toward the target organisation. Because the traffic comes from many different devices and IP addresses, it may be difficult to distinguish malicious traffic from legitimate traffic.
+
+For example, an online shopping website may normally receive a few thousand customer requests per minute. During a DDoS attack, the site may suddenly receive hundreds of thousands or millions of requests. If the infrastructure cannot process the additional workload, the website may become slow or completely unavailable.
+
+Some DDoS attacks focus mainly on consuming network bandwidth. Other attacks attempt to exhaust network devices such as firewalls or load balancers. Application-layer DDoS attacks may send apparently legitimate HTTP requests to expensive application functions, such as login, search, database queries, or dynamic page generation.
+
+Types of DDoS Attacks
+
+1. Volumetric Attacks
+
+Volumetric attacks attempt to consume the available network bandwidth between the target organisation and the internet.
+
+The attacker sends a very large amount of traffic toward the victim until the network connection becomes congested.
+
+Examples may include:
+- UDP floods
+- ICMP floods
+- DNS amplification
+- other reflection and amplification attacks
+
+In an amplification attack, an attacker may send a small request to an external server while using the victim's IP address as the apparent source. The external server then sends a much larger response toward the victim. When this process is repeated through many systems, the resulting traffic can become extremely large.
+
+2. Protocol Attacks
+
+Protocol attacks target weaknesses or resource limitations in network protocols and networking infrastructure.
+
+Instead of only consuming bandwidth, these attacks may exhaust connection tables, firewall capacity, load balancers, or server networking resources.
+
+Examples may include:
+- SYN floods
+- fragmented packet attacks
+- connection exhaustion techniques
+
+A SYN flood, for example, sends many connection requests without completing the normal TCP connection process. The server keeps resources reserved for these incomplete connections, which can reduce its ability to serve legitimate clients.
+
+3. Application-Layer Attacks
+
+Application-layer attacks target the application itself, often using HTTP or HTTPS requests.
+
+These attacks may appear similar to legitimate user traffic, which can make them more difficult to detect.
+
+Examples may include:
+- HTTP GET floods
+- HTTP POST floods
+- repeated login requests
+- repeated search queries
+- expensive database requests
+
+For example, an attacker may repeatedly request a page that requires complex database processing. Even if each request uses relatively little bandwidth, thousands of simultaneous requests may overload application servers or databases.
+
+Impact of DDoS Attacks on Business Enterprises
+
+1. Service Downtime
+
+The most direct impact of a DDoS attack is service disruption.
+
+If a business website, mobile application, customer portal, payment system, or API becomes unavailable, customers may be unable to access important services.
+
+For businesses that depend heavily on online services, even a short outage can have a significant operational impact.
+
+2. Revenue Loss
+
+E-commerce companies, financial platforms, online service providers, and other digital businesses may lose revenue when customers cannot complete transactions.
+
+For example, if an online retailer becomes unavailable during a major sales period, every minute of downtime may result in lost orders.
+
+3. Customer Dissatisfaction
+
+Customers expect digital services to be available when needed.
+
+Repeated service interruptions can create frustration and reduce customer confidence.
+
+Customers may also move to competitors if they believe another company offers more reliable services.
+
+4. Reputation Damage
+
+A major DDoS incident may affect the public reputation of an organisation.
+
+Customers, partners, investors, and other stakeholders may question whether the company has sufficient cybersecurity controls and infrastructure resilience.
+
+5. SLA Violations
+
+Many organisations operate under Service Level Agreements (SLAs) that specify required service availability.
+
+A long outage may result in SLA violations, compensation payments, penalties, or contractual problems.
+
+6. Operational Cost
+
+Responding to a DDoS attack requires technical staff, cybersecurity teams, network engineers, cloud providers, and management involvement.
+
+The company may also need to purchase emergency mitigation services or additional infrastructure.
+
+These activities increase operational costs.
+
+7. Productivity Loss
+
+Employees may be unable to perform their normal work if internal or customer-facing services are disrupted.
+
+IT and security teams may also need to stop other projects and focus completely on incident response.
+
+8. Secondary Security Risks
+
+In some situations, a DDoS attack may be used as a distraction.
+
+While security teams are focused on service availability, attackers may attempt other activities such as account compromise, malware deployment, data theft, or unauthorised access.
+
+Protection Guidelines for Business Enterprises
+
+1. Use Dedicated DDoS Protection
+
+Organisations should consider using dedicated DDoS protection services.
+
+These services are designed to detect large attack traffic volumes and filter malicious traffic before it reaches the organisation's infrastructure.
+
+2. Use a Content Delivery Network (CDN)
+
+A CDN distributes content across multiple geographically distributed servers.
+
+This can reduce the amount of traffic reaching the origin server and provide additional capacity during high-traffic events.
+
+A CDN may also help absorb some forms of DDoS traffic.
+
+3. Deploy a Web Application Firewall (WAF)
+
+A WAF helps protect web applications from malicious HTTP requests.
+
+It can identify and block suspicious request patterns, abusive clients, bots, and application-layer attacks.
+
+4. Implement Rate Limiting
+
+Rate limiting controls how many requests a client is allowed to send within a specific period.
+
+For example, an API may allow only a defined number of requests per minute from one client.
+
+Rate limiting can reduce abuse and protect application resources.
+
+5. Use API Throttling
+
+API throttling is particularly useful for protecting web APIs.
+
+If a client exceeds allowed limits, requests can be delayed, rejected, or temporarily blocked.
+
+This helps prevent a single client or bot from consuming excessive application capacity.
+
+6. Use Load Balancing
+
+Load balancers distribute incoming traffic across multiple application servers.
+
+This helps prevent one server from becoming overloaded and allows an organisation to use multiple instances for higher availability.
+
+7. Apply Autoscaling Carefully
+
+Cloud infrastructure can automatically add additional computing resources when demand increases.
+
+Autoscaling can improve resilience during traffic spikes.
+
+However, organisations should also use cost controls because an attacker may attempt to generate traffic that causes unnecessary infrastructure scaling.
+
+8. Protect DNS Infrastructure
+
+DNS is a critical dependency for online services.
+
+Organisations should use resilient and highly available DNS providers because attackers may target DNS services during a DDoS attack.
+
+9. Implement Monitoring and Alerting
+
+Network and application monitoring should continuously analyse:
+- traffic volume
+- connection rates
+- HTTP request rates
+- latency
+- server utilisation
+- error rates
+- unusual geographic traffic
+- failed requests
+
+Automated alerts should notify security teams when abnormal patterns are detected.
+
+10. Use Bot Management
+
+Automated bot traffic should be analysed and controlled.
+
+Bot management systems can help identify suspicious automated behaviour and distinguish legitimate users from malicious bots.
+
+11. Minimise Internet Exposure
+
+Organisations should expose only services that need to be publicly accessible.
+
+Unnecessary network ports and services should be disabled.
+
+Reducing the attack surface decreases the number of potential targets.
+
+12. Maintain an Incident Response Plan
+
+The organisation should have a documented DDoS incident response process.
+
+The plan should identify:
+- technical responsibilities
+- escalation procedures
+- internet service provider contacts
+- cloud provider contacts
+- communication procedures
+- recovery priorities
+- customer communication responsibilities
+
+DDoS Mitigation Strategies
+
+1. Traffic Scrubbing
+
+Traffic scrubbing services redirect incoming traffic through specialised infrastructure.
+
+The scrubbing system analyses the traffic, removes malicious packets or requests, and forwards legitimate traffic to the organisation.
+
+This can be particularly effective during large volumetric attacks.
+
+2. Traffic Filtering
+
+Firewalls, routers, WAFs, and DDoS protection systems can apply filtering rules.
+
+Suspicious IP addresses, protocols, request patterns, or traffic sources may be blocked.
+
+However, filtering rules must be carefully managed so legitimate customers are not unnecessarily blocked.
+
+3. Upstream Provider Support
+
+Internet Service Providers and cloud providers may help block or redirect malicious traffic before it reaches the organisation.
+
+This is important because an organisation's own internet connection may become saturated before internal security systems can respond.
+
+4. Anycast and Distributed Infrastructure
+
+Anycast routing and geographically distributed infrastructure can spread traffic across multiple locations.
+
+This increases resilience because attack traffic does not need to be processed by only one data centre.
+
+5. CDN Caching
+
+Static content can be cached at CDN locations.
+
+This reduces the number of requests that need to reach the origin application infrastructure.
+
+6. Load Balancing
+
+Load balancing distributes legitimate traffic across multiple systems.
+
+When combined with multiple application instances, it reduces dependence on a single server.
+
+7. Failover Architecture
+
+Critical services should have backup infrastructure.
+
+If one location or environment becomes unavailable, traffic may be redirected to another available environment.
+
+8. Rate Limiting and Connection Controls
+
+Systems can restrict excessive connections or repeated requests.
+
+These controls are especially useful against application-layer attacks.
+
+9. Dynamic Security Rules
+
+During an attack, security teams may temporarily introduce stricter firewall, WAF, or API rules.
+
+Examples may include:
+- blocking known malicious networks
+- requiring additional verification
+- reducing allowed request rates
+- restricting expensive application functions
+
+10. Continuous Monitoring During the Incident
+
+Security teams should monitor the effectiveness of mitigation activities.
+
+The attack may change over time, so defensive controls may also need to be adjusted.
+
+Recommended DDoS Defence Architecture
+
+Internet / Users / Attack Traffic
+              |
+              v
+[ DDoS Protection / Traffic Scrubbing ]
+              |
+              v
+[ CDN + Web Application Firewall ]
+              |
+              v
+[ API Gateway / Rate Limiting ]
+              |
+              v
+[ Load Balancer ]
+         |             |
+         v             v
+[ Application 1 ] [ Application 2 ]
+         |             |
+         -------|-------
+                |
+                v
+        [ Database Layer ]
+
+Monitoring Components:
+- Network Monitoring
+- Application Monitoring
+- Security Alerts
+- Centralized Logging
+- Incident Response Team
+
+Conclusion
+
+DDoS attacks represent a serious availability risk for modern business enterprises because they can overwhelm network bandwidth, infrastructure components, and application resources. Their effects may include service downtime, financial loss, SLA violations, customer dissatisfaction, reputational damage, and increased operational cost.
+
+No single security control can completely protect every organisation from all forms of DDoS attack. Therefore, businesses should use a layered defence strategy. This should combine dedicated DDoS protection, traffic scrubbing, CDN services, Web Application Firewalls, load balancing, rate limiting, resilient DNS, autoscaling, monitoring, alerting, filtering, and a well-prepared incident response process.
+
+The main objective of DDoS protection is not only to block malicious traffic. It is to maintain the availability of important business services while allowing legitimate customers to continue using those services. Regular monitoring, testing, capacity planning, and incident-response preparation are therefore essential parts of an effective enterprise DDoS defence strategy.

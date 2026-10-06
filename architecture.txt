@@ -1,0 +1,46 @@
+Tutorial 4 - Monolithic vs Microservices Architecture
+
+A. Monolithic Architecture
+
+[ Web / Mobile Client ]
+          |
+          v
+[ Monolithic Application ]
+---------------------------------
+| Login Module                  |
+| Customer Module               |
+| Inventory Module              |
+| Order Module                  |
+| Payment Module                |
+| Reporting Module              |
+---------------------------------
+          |
+          v
+[ Single Shared Database ]
+
+
+B. Microservices Architecture
+
+[ Web / Mobile Client ]
+          |
+          v
+[ API Gateway / Load Balancer ]
+      |        |        |
+      v        v        v
+[Auth MS]  [Order MS]  [Inventory MS]
+   |           |            |
+   v           v            v
+[Auth DB]   [Order DB]   [Inventory DB]
+
+          |
+          v
+[ Payment MS ] ---> [ Payment DB ]
+
+          |
+          v
+[ Reporting MS ] ---> [ Reporting DB ]
+
+
+Main Difference:
+Monolithic = One application + tightly integrated modules
+Microservices = Independent services + independent deployment

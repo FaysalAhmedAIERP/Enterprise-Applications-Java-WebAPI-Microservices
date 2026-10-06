@@ -1,0 +1,67 @@
+Tutorial 5 - Movie Microservice Architecture
+
+Client / User
+     |
+     v
+[ REST API Controller ]
+     |
+     v
+[ Movie Service ]
+     |
+     v
+[ Repository Layer ]
+     |
+     v
+[ Persistent Datastore ]
+
+API Operations:
+
+GET /movies
+Purpose:
+Retrieve all movies.
+
+GET /movies/{title}
+Purpose:
+Retrieve a movie by title.
+
+POST /movies
+Purpose:
+Create or record a new movie.
+
+Twelve-Factor Mapping:
+
+Codebase
+→ One version-controlled movie-service codebase.
+
+Dependencies
+→ All Java and database dependencies declared in Gradle/Maven.
+
+Config
+→ Database URL, credentials and ports stored externally.
+
+Backing Services
+→ Persistent datastore treated as an attached resource.
+
+Build, Release, Run
+→ Build, release configuration and runtime are separated.
+
+Processes
+→ Movie service runs as stateless processes.
+
+Port Binding
+→ REST API exposed through an HTTP port.
+
+Concurrency
+→ Multiple movie-service instances can run behind a load balancer.
+
+Disposability
+→ Containers/services can start quickly and shut down gracefully.
+
+Dev/Prod Parity
+→ Similar runtime configuration across development, testing and production.
+
+Logs
+→ Application and API logs sent to centralized logging.
+
+Admin Processes
+→ Database migration and maintenance run as separate one-off tasks.

@@ -1,0 +1,454 @@
+Tutorial 8 - AWS Simple Queue Service (SQS) in the PROTON Connected-Car Application
+
+Introduction
+
+The PROTON Group is developing a connected-car application for its X7 Series vehicles. The application collects sensor data from the cars and uses that data to provide drivers with dynamically updated map information.
+
+Because connected cars continuously generate data, the system may need to process a very large number of events. The number of events may also increase suddenly depending on the number of active vehicles, traffic conditions, road conditions, weather conditions, or other driving-related situations.
+
+For this reason, the application requires a scalable and cost-effective cloud architecture.
+
+In the tutorial scenario, PROTON considers several AWS services, including:
+
+- AWS S3
+- AWS Simple Queue Service (SQS)
+- AWS Relational Database Service (RDS)
+- AWS DynamoDB
+
+Among these services, AWS SQS can be used as the messaging technology that connects vehicle-data producers with backend processing services.
+
+1. What is AWS SQS?
+
+AWS Simple Queue Service (SQS) is a managed cloud-based message queuing service.
+
+A message queue allows one part of a system to send a message without requiring another part of the system to process that message immediately.
+
+The sender of a message is often called the producer.
+
+The application that receives and processes the message is often called the consumer.
+
+AWS SQS stores messages in a queue until a consumer is ready to process them.
+
+This creates asynchronous communication between system components.
+
+2. Why SQS is Useful for the PROTON Connected-Car Application
+
+In the PROTON connected-car scenario, thousands of X7 vehicles may send sensor data at the same time.
+
+If every vehicle directly sends information to a processing service and the service becomes overloaded, data may be delayed or lost.
+
+SQS helps solve this problem by acting as a buffer between the connected cars and the backend processing services.
+
+Instead of requiring immediate processing, sensor events can be stored temporarily in the queue.
+
+Worker services can then process those messages at a manageable rate.
+
+This makes the system more scalable and reliable.
+
+3. Basic SQS Architecture for PROTON
+
+A possible architecture is:
+
+[X7 Cars / Vehicle Sensors]
+            |
+            v
+[API Gateway / Data Ingestion Service]
+            |
+            v
+        [AWS SQS]
+            |
+      ----------------
+      |              |
+      v              v
+[Map Worker]   [Analytics Worker]
+      |              |
+      ----------------
+             |
+             v
+ [RDS / DynamoDB / S3]
+             |
+             v
+[Updated Map Information]
+             |
+             v
+        [X7 Drivers]
+
+4. Step-by-Step Working Process
+
+Step 1 - Sensor Data Generation
+
+The X7 connected cars continuously generate sensor information.
+
+Examples of sensor information may include:
+
+- vehicle location
+- speed
+- road condition information
+- traffic-related data
+- vehicle status
+- route information
+- other connected-car telemetry
+
+The tutorial does not define the exact sensor fields, so these are examples of how sensor data could be used in such an architecture.
+
+Step 2 - Data Ingestion
+
+The vehicle data is sent to the cloud through an API or another data-ingestion component.
+
+The ingestion service receives the event from the vehicle and prepares it for backend processing.
+
+Step 3 - Sending the Message to SQS
+
+The ingestion service creates a message and places it into an SQS queue.
+
+For example, a message may contain:
+
+Vehicle ID
+Location
+Timestamp
+Sensor Event
+Road Condition Data
+
+Conceptual example:
+
+{
+  "vehicleId": "X7-1001",
+  "location": "Kuala Lumpur",
+  "timestamp": "2026-10-06T16:30:00",
+  "event": "traffic_update"
+}
+
+The message is then stored inside the SQS queue.
+
+Step 4 - Temporary Message Storage
+
+SQS keeps the message until a backend service is ready to process it.
+
+This is important because the connected cars may generate messages faster than the backend system can process them.
+
+The queue therefore acts as a temporary buffer.
+
+Step 5 - Worker Service Receives the Message
+
+A backend worker service retrieves a message from the SQS queue.
+
+For example, a Map Processing Worker may receive the message and analyse how the sensor information affects the current map data.
+
+Another worker may process data for analytics or traffic forecasting.
+
+Step 6 - Message Processing
+
+The worker processes the sensor event.
+
+For example:
+
+- traffic information may be analysed
+- a road-condition update may be identified
+- map information may be updated
+- traffic congestion may be detected
+- route recommendations may be recalculated
+
+Step 7 - Store Processed Data
+
+After processing, the results can be stored in one of the AWS data services mentioned in the tutorial.
+
+AWS DynamoDB could be used for fast NoSQL data access.
+
+AWS RDS could be used when relational data and SQL-based queries are required.
+
+AWS S3 could be used for large-scale object storage, archived sensor data, reports, or raw data files.
+
+Step 8 - Update Information for Drivers
+
+The processed information can then be used to provide updated map information to connected X7 vehicles.
+
+Drivers may receive more current information about routes, traffic, or other road conditions.
+
+5. Decoupling
+
+One of the most important advantages of SQS is decoupling.
+
+Without a queue:
+
+Vehicle Data
+    |
+    v
+Processing Service
+
+If the processing service becomes unavailable, the system may fail to process incoming events.
+
+With SQS:
+
+Vehicle Data
+    |
+    v
+SQS Queue
+    |
+    v
+Processing Service
+
+The message can remain in the queue until the processing service becomes available.
+
+This means the producer and consumer do not need to operate at exactly the same speed or at exactly the same time.
+
+6. Handling Traffic Spikes
+
+Connected-car systems may experience large variations in message volume.
+
+For example, message volume may increase during:
+
+- peak-hour traffic
+- large public events
+- road accidents
+- severe weather
+- sudden changes in road conditions
+- high numbers of active connected vehicles
+
+SQS can absorb these sudden increases by storing messages temporarily.
+
+Backend services can then process the messages as capacity becomes available.
+
+7. Independent Scaling
+
+SQS allows backend processing services to scale independently from the connected vehicles.
+
+For example:
+
+Normal Traffic:
+2 Map Worker Instances
+
+High Traffic:
+8 Map Worker Instances
+
+The number of workers can increase when the SQS queue becomes large and decrease when demand falls.
+
+This supports a cost-effective cloud architecture because additional computing resources can be used when needed.
+
+8. Visibility Timeout
+
+When a consumer receives an SQS message, the message is temporarily hidden from other consumers.
+
+This period is known as the visibility timeout.
+
+The worker has time to process the message.
+
+If processing succeeds, the worker deletes the message from the queue.
+
+If the worker fails before deleting it, the message can become visible again so another consumer can attempt to process it.
+
+This helps improve reliability.
+
+9. Retry Mechanism
+
+Temporary processing failures may occur.
+
+Examples include:
+
+- temporary network problems
+- unavailable databases
+- worker failure
+- service timeout
+- processing errors
+
+SQS allows failed messages to become available again for another processing attempt.
+
+The application should therefore be designed so that repeated processing does not create incorrect duplicate results.
+
+10. Dead-Letter Queue
+
+A message that repeatedly fails to process can be moved to a Dead-Letter Queue, often called a DLQ.
+
+For example:
+
+Main SQS Queue
+      |
+      v
+Processing Attempt
+      |
+      v
+Repeated Failure
+      |
+      v
+Dead-Letter Queue
+
+The development or operations team can investigate these failed messages separately.
+
+This prevents a problematic message from repeatedly interfering with normal processing.
+
+11. Message Retention
+
+SQS can retain messages for a configured period.
+
+This gives the system time to recover if backend processing is temporarily unavailable.
+
+For example, if a worker service is temporarily offline, messages may remain in the queue until the service is restored.
+
+12. Standard Queue
+
+A Standard SQS queue is suitable when very high throughput and scalability are important.
+
+It supports a very large number of messages.
+
+However, the application should be designed to handle the possibility of duplicate delivery and differences in message ordering.
+
+For large-scale connected-car telemetry, a Standard Queue may be appropriate when strict ordering is not required.
+
+13. FIFO Queue
+
+FIFO means First-In-First-Out.
+
+A FIFO queue is useful when message ordering and controlled duplicate processing are important.
+
+For example, if certain vehicle events must be processed in the exact order they were generated, a FIFO queue may be considered.
+
+The appropriate queue type depends on the business and technical requirements of the connected-car application.
+
+14. Monitoring
+
+The SQS-based solution should be monitored continuously.
+
+Important monitoring information may include:
+
+- number of messages in the queue
+- age of the oldest message
+- processing rate
+- failed messages
+- dead-letter queue size
+- worker performance
+- processing latency
+
+Monitoring helps the organisation identify whether additional processing capacity is required.
+
+15. Cost Effectiveness
+
+The tutorial states that PROTON wants a solution that can adapt to changing driving requirements in a cost-effective manner.
+
+SQS supports this goal because it is a managed AWS service.
+
+The organisation does not need to build and maintain its own message-queue infrastructure.
+
+Processing services can also scale according to demand.
+
+Therefore, PROTON can avoid permanently running unnecessary computing resources only to handle occasional peak traffic.
+
+16. Reliability and Fault Tolerance
+
+The queue creates a separation between message producers and consumers.
+
+If one worker fails, another worker may process the message later.
+
+If backend processing slows down, messages can wait in the queue.
+
+This helps reduce the risk that temporary application failures will immediately cause sensor data processing to stop.
+
+17. Example End-to-End Flow
+
+A complete example can be represented as:
+
+X7 Car Sensor
+      |
+      v
+Generate Traffic Event
+      |
+      v
+Cloud Data Ingestion
+      |
+      v
+Send Message to AWS SQS
+      |
+      v
+SQS Stores Message
+      |
+      v
+Map Worker Receives Message
+      |
+      v
+Process Sensor Data
+      |
+      v
+Update DynamoDB / RDS
+      |
+      v
+Archive Raw Data in S3 if required
+      |
+      v
+Generate Updated Map Information
+      |
+      v
+Deliver Information to Driver
+
+18. Main Benefits of SQS in the PROTON Scenario
+
+The main benefits include:
+
+1. Decoupling
+Connected cars do not depend directly on backend worker availability.
+
+2. Scalability
+Multiple consumers can process queue messages.
+
+3. Traffic Spike Management
+Large amounts of sensor data can wait safely in the queue.
+
+4. Asynchronous Processing
+Vehicles do not need to wait for all backend processing to complete.
+
+5. Reliability
+Messages can be retried if processing fails.
+
+6. Fault Isolation
+Failure of one worker does not necessarily stop the entire system.
+
+7. Cost Efficiency
+Processing capacity can scale according to demand.
+
+8. Integration
+SQS can work with other AWS services such as RDS, DynamoDB, S3 and other compute or processing services.
+
+19. Recommended Architecture
+
+[X7 Connected Cars]
+          |
+          v
+[API / Ingestion Layer]
+          |
+          v
+     [AWS SQS]
+          |
+    -----------------
+    |               |
+    v               v
+[Map Worker]   [Analytics Worker]
+    |               |
+    -----------------
+           |
+           v
+[RDS / DynamoDB / S3]
+           |
+           v
+[Map Update Service]
+           |
+           v
+      [X7 Driver]
+
+Monitoring should observe:
+- SQS queue depth
+- message age
+- worker health
+- processing errors
+- dead-letter messages
+- application latency
+
+Conclusion
+
+AWS Simple Queue Service is suitable for the PROTON connected-car scenario because it provides asynchronous communication between connected vehicles and backend processing services.
+
+X7 cars can generate sensor events without requiring immediate processing by the map or analytics services. SQS can temporarily store these messages and allow backend workers to process them according to available capacity.
+
+This architecture supports scalability because more worker instances can be added when message volume increases. It also improves resilience because temporary worker failures do not necessarily cause sensor messages to be lost immediately.
+
+Features such as visibility timeout, retries, message retention and dead-letter queues can help the application handle temporary failures and problematic messages.
+
+When combined with AWS services such as S3, RDS and DynamoDB, SQS can form part of a scalable cloud architecture for processing connected-car sensor data and producing dynamically updated map information.
+
+Therefore, in the context described in the tutorial, SQS can act as the messaging and buffering layer between PROTON X7 connected cars and the cloud-based services that process and store their sensor information.

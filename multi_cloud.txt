@@ -1,0 +1,39 @@
+Tutorial 7 - Multi-Cloud
+
+Definition:
+Multi-Cloud means using cloud services from more than one cloud provider.
+
+Example:
+A company may use:
+AWS for compute,
+Microsoft Azure for analytics,
+Google Cloud for AI services.
+
+Features / Functionality:
+- provider diversity
+- workload portability
+- regional flexibility
+- risk distribution
+- access to specialized cloud services
+
+Suitability:
+Suitable for enterprises that need:
+- global operations
+- resilience
+- vendor diversification
+- compliance flexibility
+- specialized cloud capabilities
+
+Costs:
+- multiple provider contracts
+- higher management complexity
+- networking cost
+- training cost
+- integration cost
+- governance and security cost
+
+Benefits:
+- reduced vendor dependency
+- improved resilience
+- better workload placement
+- access to best-of-breed services

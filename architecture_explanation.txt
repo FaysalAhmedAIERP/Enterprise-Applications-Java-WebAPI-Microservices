@@ -1,0 +1,64 @@
+Tutorial 6 - Architecture Explanation
+
+1. Web Client
+Users access the Pet Clinic application through a web browser.
+
+2. Load Balancer / API Gateway
+All incoming requests first pass through the Load Balancer or API Gateway.
+
+Purpose:
+- distribute incoming traffic
+- route requests to the correct microservice
+- improve scalability
+- provide a single entry point
+
+3. Owner Service
+Manages owner-related operations and data.
+
+4. Pet Service
+Manages pet-related operations and data.
+
+5. Vet Service
+Manages veterinarian-related operations and data.
+
+6. Visit Service
+Manages visit and appointment-related operations and data.
+
+7. Containers
+Each microservice runs inside its own container.
+
+Benefits:
+- independent deployment
+- isolation
+- easier scaling
+- consistent runtime environment
+
+8. Databases
+Each microservice can manage its own persistent datastore.
+
+Example:
+Owner Service -> Owner Database
+Pet Service -> Pet Database
+Vet Service -> Vet Database
+Visit Service -> Visit Database
+
+9. Service Discovery / Configuration
+Allows services to locate each other and receive centralized configuration.
+
+10. Monitoring and Logging
+Centralized monitoring collects:
+- logs
+- errors
+- health status
+- performance metrics
+
+11. Container Orchestration
+Kubernetes or a similar platform can manage:
+- container deployment
+- scaling
+- automatic restart
+- rolling updates
+- health checks
+
+Conclusion:
+This architecture converts the original monolithic Pet Clinic application into a scalable containerized microservice architecture with load balancing.

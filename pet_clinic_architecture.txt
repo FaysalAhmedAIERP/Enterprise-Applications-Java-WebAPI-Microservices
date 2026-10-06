@@ -1,0 +1,60 @@
+Tutorial 6 - Pet Clinic Microservice Architecture
+
+Existing System:
+
+[ Web Browser / Client ]
+          |
+          v
+[ Monolithic Java Web Application ]
+          |
+          v
+[ Relational Database ]
+
+Current application manages:
+- Owners
+- Pets
+- Vets
+- Visits
+
+
+Recommended Containerized Microservice Architecture:
+
+                [ Web Browser / Client ]
+                           |
+                           v
+              [ Load Balancer / API Gateway ]
+                           |
+          -----------------------------------------
+          |              |             |          |
+          v              v             v          v
+ [ Owner Service ] [ Pet Service ] [ Vet Service ] [ Visit Service ]
+    Container        Container       Container       Container
+          |              |             |          |
+          v              v             v          v
+    [ Owner DB ]    [ Pet DB ]     [ Vet DB ]   [ Visit DB ]
+
+
+Supporting Components:
+
+[ Service Discovery / Configuration ]
+                |
+                v
+ Owner / Pet / Vet / Visit Services
+
+[ Centralized Logging / Monitoring ]
+                |
+                v
+ Logs + Metrics + Health Checks
+
+
+Container Orchestration:
+
+[ Kubernetes / Container Platform ]
+
+Functions:
+- Start and stop containers
+- Scale service instances
+- Restart failed containers
+- Rolling deployment
+- Health checks
+- Load balancing support

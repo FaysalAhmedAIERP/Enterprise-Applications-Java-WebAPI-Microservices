@@ -1,0 +1,74 @@
+Tutorial 1 - Application Design and Development Technologies
+
+1. Enterprise Applications
+An enterprise application is a large-scale software system designed to support an organisation's business processes, data, users and integration needs.
+
+Example:
+An ERP system can integrate procurement, inventory, finance, HR and sales in one platform.
+
+2. Three-Tier Architecture
+Three-tier architecture separates an application into:
+
+Presentation Tier
+- User interface
+- Example: Web browser
+
+Application / Business Tier
+- Business logic and processing
+- Example: Java application running on Tomcat
+
+Data Tier
+- Database and persistent storage
+- Example: MySQL or another relational database
+
+Example Flow:
+Browser
+   |
+   v
+Java / Tomcat Application
+   |
+   v
+Database
+
+3. Design Patterns for Enterprise Applications
+Design patterns are reusable solutions to common software design problems.
+
+Common examples:
+- MVC
+- DAO / Repository
+- Service Layer
+- Dependency Injection
+
+Example:
+MVC separates:
+Model
+View
+Controller
+
+4. Java Technology for Enterprise Application Development
+Java enterprise development commonly uses:
+
+- Java
+- Jakarta EE
+- Servlet
+- JSP
+- REST API
+- JDBC / JPA
+- Tomcat Application Server
+
+Example:
+A Servlet receives an HTTP request, processes the request and returns HTML or JSON.
+
+5. JSP and Servlet Technology
+
+Servlet:
+A Java server-side component used to process HTTP requests and responses.
+
+JSP:
+A server-side page technology used to generate dynamic HTML.
+
+Example:
+A Servlet can process customer data and forward the result to a JSP page for display.
+
+Tutorial 1 Status:
+Completed

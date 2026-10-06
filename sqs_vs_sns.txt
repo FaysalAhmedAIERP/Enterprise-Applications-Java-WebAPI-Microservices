@@ -1,0 +1,585 @@
+Tutorial 8 - AWS SQS vs AWS SNS
+
+Introduction
+
+AWS Simple Queue Service (SQS) and AWS Simple Notification Service (SNS) are both cloud-based messaging services provided by Amazon Web Services.
+
+Although both services are used for communication between application components, they are designed for different messaging patterns.
+
+AWS SQS is mainly used for message queuing and asynchronous processing.
+
+AWS SNS is mainly used for publish/subscribe messaging and event broadcasting.
+
+Understanding the difference between SQS and SNS is important when designing scalable cloud applications such as the PROTON X7 connected-car system described in the tutorial.
+
+1. AWS SQS
+
+AWS Simple Queue Service is a managed message queue.
+
+The main purpose of SQS is to store messages until one or more consumers are ready to process them.
+
+Basic model:
+
+Producer
+   |
+   v
+[SQS Queue]
+   |
+   v
+Consumer
+
+In this model, the producer does not need to communicate directly with the consumer.
+
+The producer sends a message to the queue.
+
+The queue stores the message.
+
+A consumer retrieves the message when it is ready.
+
+This creates asynchronous communication between different application components.
+
+2. AWS SNS
+
+AWS Simple Notification Service is a managed publish/subscribe messaging service.
+
+The main purpose of SNS is to distribute one message to multiple subscribers.
+
+Basic model:
+
+Publisher
+   |
+   v
+[SNS Topic]
+   |
+   |-------------------------
+   |            |           |
+   v            v           v
+Subscriber A  Subscriber B  Subscriber C
+
+A publisher sends a message to an SNS topic.
+
+SNS then distributes that message to all subscribed endpoints.
+
+Subscribers may include different applications, services, queues, notification systems, or other supported endpoints.
+
+3. Main Difference Between SQS and SNS
+
+The simplest difference is:
+
+SQS = Queue
+
+SNS = Publish/Subscribe
+
+SQS is designed to store messages until they are processed.
+
+SNS is designed to broadcast messages to multiple subscribers.
+
+4. Communication Model
+
+AWS SQS uses a queue-based communication model.
+
+A message is placed in a queue and waits there until a consumer receives it.
+
+This is useful when a task must be processed asynchronously.
+
+Example:
+
+PROTON X7 Sensor
+      |
+      v
+   SQS Queue
+      |
+      v
+Map Processing Worker
+
+AWS SNS uses a publish/subscribe communication model.
+
+A publisher sends one message to a topic, and multiple subscribers may receive the same event.
+
+Example:
+
+PROTON X7 Event
+      |
+      v
+   SNS Topic
+    |   |   |
+    v   v   v
+ Map  Alert Analytics
+
+5. Message Delivery
+
+SQS messages are stored in a queue.
+
+A consumer retrieves messages from the queue and processes them.
+
+SNS normally pushes messages to subscribed endpoints.
+
+This means SNS is suitable when an event should immediately be distributed to multiple systems.
+
+6. Message Retention
+
+SQS supports message retention.
+
+A message can remain in the queue for a configured period if it is not immediately processed.
+
+This is useful when a backend worker is temporarily unavailable.
+
+For example:
+
+Sensor Event
+    |
+    v
+ SQS Queue
+    |
+Worker temporarily unavailable
+    |
+Message remains in queue
+    |
+Worker recovers
+    |
+Message is processed
+
+SNS is mainly used for immediate event delivery rather than long-term message storage.
+
+If long-term buffering is needed, SNS can be combined with SQS.
+
+7. Consumer Model
+
+With SQS, consumer applications actively receive messages from the queue.
+
+The consumer processes the message and deletes it after successful processing.
+
+With SNS, subscribers receive notifications from the topic.
+
+The publisher does not need to know how many subscribers exist.
+
+8. Point-to-Point Processing
+
+SQS is suitable for point-to-point or worker-based processing.
+
+For example:
+
+Vehicle Event
+     |
+     v
+  SQS Queue
+     |
+     v
+Map Worker
+
+The worker receives the message and processes it.
+
+This is useful when one processing pipeline must handle a task.
+
+9. Fan-Out Messaging
+
+SNS is suitable for fan-out messaging.
+
+Fan-out means one event can be distributed to multiple destinations.
+
+Example:
+
+X7 Car Event
+      |
+      v
+   SNS Topic
+   |    |    |
+   v    v    v
+ Map  Alerts Analytics
+
+The same event can be delivered to multiple systems.
+
+10. PROTON Connected-Car Example Using SQS
+
+Suppose an X7 vehicle detects heavy traffic.
+
+The vehicle sends a sensor event.
+
+The cloud ingestion service sends the event to SQS.
+
+The map processing service later retrieves the event.
+
+Flow:
+
+[X7 Car]
+   |
+   v
+[API / Ingestion]
+   |
+   v
+[AWS SQS]
+   |
+   v
+[Map Worker]
+   |
+   v
+[Update Map Database]
+
+This design is useful because the worker does not need to process the message immediately.
+
+The queue can buffer the event.
+
+11. PROTON Connected-Car Example Using SNS
+
+Now suppose PROTON wants one vehicle event to be used by several systems.
+
+For example, one traffic event may need to go to:
+
+- map processing
+- analytics
+- driver notification
+- monitoring
+
+SNS can distribute the event to all of them.
+
+Flow:
+
+[X7 Car Event]
+      |
+      v
+   [SNS Topic]
+    |    |    |    |
+    v    v    v    v
+  Map  Analytics Alerts Monitoring
+
+This is a publish/subscribe model.
+
+12. SQS and SNS Combined
+
+SQS and SNS can be used together.
+
+This is a common cloud architecture.
+
+Example:
+
+[X7 Car Event]
+      |
+      v
+   [SNS Topic]
+     |      |
+     v      v
+ [SQS A]  [SQS B]
+    |         |
+    v         v
+ Map       Analytics
+
+SNS distributes the event.
+
+Each SQS queue stores the event independently.
+
+This allows each downstream system to process the same event at its own speed.
+
+13. Why SNS + SQS is Useful
+
+The combined SNS and SQS pattern provides several benefits:
+
+- event fan-out
+- message buffering
+- independent processing
+- resilience
+- scalability
+- decoupling
+- failure isolation
+
+For example, if the analytics service is temporarily unavailable, its SQS queue can continue storing messages.
+
+At the same time, the map service can continue processing its own queue.
+
+14. Delivery Behaviour
+
+SQS focuses on reliable queue-based processing.
+
+Messages remain available until they are successfully processed or expire according to retention settings.
+
+SNS focuses on distributing notifications to subscribers.
+
+The main objective is to deliver an event to all relevant subscribers.
+
+15. Scalability
+
+Both SQS and SNS are designed for scalable cloud systems.
+
+SQS allows the number of consumers to increase when queue traffic becomes high.
+
+SNS allows one event to be distributed to many subscribers without requiring the publisher to communicate with each subscriber separately.
+
+16. Decoupling
+
+Both services improve decoupling.
+
+SQS decouples the producer from the processing worker.
+
+SNS decouples the publisher from multiple subscribers.
+
+This is important in microservice architectures because services can operate more independently.
+
+17. Fault Tolerance
+
+SQS can improve fault tolerance by storing messages when consumers are temporarily unavailable.
+
+SNS can improve event distribution because multiple subscribers can receive the same event.
+
+When SNS is combined with SQS, the architecture becomes more resilient because each subscriber can have its own independent queue.
+
+18. Use Case Comparison
+
+SQS is suitable for:
+
+- background processing
+- job queues
+- sensor-event processing
+- order processing
+- data transformation
+- asynchronous workloads
+- workload buffering
+
+SNS is suitable for:
+
+- notifications
+- event broadcasting
+- fan-out
+- sending one event to many services
+- alerts
+- application events
+
+19. Connected-Car Recommendation
+
+For the PROTON X7 connected-car scenario, SQS should be used when sensor events need reliable buffering and asynchronous processing.
+
+Example:
+
+Vehicle Sensor
+     |
+     v
+ SQS Queue
+     |
+     v
+Map Worker
+
+SNS should be used when the same event must be distributed to multiple systems.
+
+Example:
+
+Vehicle Event
+     |
+     v
+ SNS Topic
+   |   |   |
+   v   v   v
+ Map Alert Analytics
+
+20. Recommended Combined Architecture
+
+A scalable architecture could be:
+
+[X7 Cars / Sensors]
+          |
+          v
+[API / Data Ingestion]
+          |
+          v
+     [AWS SNS Topic]
+       |         |
+       v         v
+  [SQS Queue A] [SQS Queue B]
+       |         |
+       v         v
+ [Map Worker] [Analytics Worker]
+       |         |
+       ----------|
+          |
+          v
+[RDS / DynamoDB / S3]
+
+Additional subscribers may include:
+
+- monitoring service
+- notification service
+- alert service
+- reporting service
+
+21. Comparison Table
+
+AWS SQS
+
+Purpose:
+Message queue and asynchronous processing
+
+Model:
+Queue-based
+
+Delivery:
+Consumer receives message from queue
+
+Message Storage:
+Messages can remain in queue until processed or expired
+
+Typical Use:
+Background tasks, sensor events, job processing
+
+Scaling:
+Increase the number of workers
+
+Main Benefit:
+Reliable buffering and decoupling
+
+
+AWS SNS
+
+Purpose:
+Event notification and message broadcasting
+
+Model:
+Publish/Subscribe
+
+Delivery:
+Messages are distributed to subscribers
+
+Message Storage:
+Primarily used for event delivery rather than work-queue storage
+
+Typical Use:
+Alerts, notifications, fan-out
+
+Scaling:
+Supports many subscribers
+
+Main Benefit:
+One message can reach multiple systems
+
+22. SQS vs SNS Summary
+
+SQS:
+
+Producer
+   |
+   v
+ Queue
+   |
+   v
+Consumer
+
+Best for:
+Reliable asynchronous task processing
+
+
+SNS:
+
+Publisher
+   |
+   v
+ Topic
+  | | |
+  v v v
+Subscribers
+
+Best for:
+Event broadcasting and notifications
+
+
+SNS + SQS:
+
+Publisher
+   |
+   v
+ SNS Topic
+  |      |
+  v      v
+SQS A   SQS B
+ |       |
+ v       v
+Service Service
+
+Best for:
+Scalable fan-out with reliable independent processing
+
+23. Benefits of Using Both Services
+
+When used together, SQS and SNS provide:
+
+- loose coupling between services
+- independent scaling
+- reliable message buffering
+- event fan-out
+- failure isolation
+- asynchronous processing
+- flexible cloud architecture
+
+This combination is especially useful in a connected-car environment where many vehicles generate events and different services need to process those events independently.
+
+24. Example PROTON Event
+
+Suppose an X7 car detects a major traffic congestion event.
+
+Step 1:
+The car sends the event to the cloud.
+
+Step 2:
+The ingestion service publishes the event to SNS.
+
+Step 3:
+SNS sends the event to multiple destinations.
+
+For example:
+
+- SQS queue for map processing
+- SQS queue for analytics
+- driver notification service
+- monitoring service
+
+Step 4:
+The map worker processes its queue.
+
+Step 5:
+The analytics worker processes its own queue.
+
+Step 6:
+The notification service sends alerts if required.
+
+Each service can process the same event independently.
+
+25. Practical Decision Rule
+
+Use SQS when:
+
+- work must wait until a consumer is ready
+- messages need buffering
+- asynchronous processing is required
+- producers and consumers should operate independently
+- workloads may experience traffic spikes
+
+Use SNS when:
+
+- one event must be sent to many systems
+- notification is required
+- publish/subscribe communication is needed
+- multiple subscribers need the same event
+
+Use SNS with SQS when:
+
+- one event must reach multiple processing services
+- each service needs reliable message buffering
+- each service needs independent scaling
+- failures in one service should not affect other services
+
+Conclusion
+
+AWS SQS and AWS SNS are both important messaging services, but they are designed for different purposes.
+
+AWS SQS provides a reliable queue for asynchronous processing. It stores messages until consumers are ready and is suitable for background jobs, connected-car sensor processing, buffering, and worker-based applications.
+
+AWS SNS provides publish/subscribe messaging. It allows a publisher to send one event to multiple subscribers and is suitable for notifications, alerts, and event broadcasting.
+
+For the PROTON X7 connected-car system, SQS is appropriate when sensor data must be stored temporarily and processed by backend workers.
+
+SNS is appropriate when one vehicle event must be distributed to several independent systems.
+
+The strongest architecture may combine both services. SNS can distribute one event to multiple SQS queues, while each downstream service processes its own queue independently.
+
+Therefore:
+
+SQS = Reliable buffering and asynchronous processing
+
+SNS = Event broadcasting and fan-out
+
+SNS + SQS = Scalable, resilient and decoupled cloud messaging architecture

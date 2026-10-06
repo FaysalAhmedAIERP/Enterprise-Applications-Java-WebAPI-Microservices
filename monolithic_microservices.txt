@@ -1,0 +1,53 @@
+Tutorial 4 - Monolithic and Microservices
+
+1. Monolithic Application:
+A monolithic application combines most business functions into one deployable application.
+
+Example:
+Login, Customer, Inventory, Sales and Reporting modules may all exist inside one WAR application.
+
+2. Microservices:
+Microservices divide an application into small, independently deployable services.
+
+Example:
+Authentication Service
+Customer Service
+Inventory Service
+Order Service
+Payment Service
+
+3. API Throttling:
+API throttling limits the number of requests a user or client can send during a specific period.
+
+Example:
+Maximum 1000 API requests per minute.
+
+4. Metering:
+Metering measures how much a cloud service or resource is consumed.
+
+Example:
+API calls, storage usage, CPU hours or network traffic can be measured for monitoring or billing.
+
+5. Continuous Delivery vs Continuous Deployment:
+
+Continuous Delivery:
+Software is automatically built and tested, but production deployment normally requires manual approval.
+
+Continuous Deployment:
+Every change that successfully passes the automated pipeline is automatically deployed to production.
+
+6. Login Module Change Request:
+
+Monolithic:
+Login change
+→ Build entire application
+→ Test entire application
+→ Package entire application
+→ Deploy entire application
+
+Microservices:
+Authentication/Login service change
+→ Build authentication service
+→ Test authentication service
+→ Deploy only authentication service
+→ Monitor independently

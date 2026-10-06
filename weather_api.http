@@ -1,0 +1,3 @@
+GET https://api.weather.gov/points/38.8894,-77.0352
+User-Agent: CT066-Student-Lab
+Accept: application/geo+json

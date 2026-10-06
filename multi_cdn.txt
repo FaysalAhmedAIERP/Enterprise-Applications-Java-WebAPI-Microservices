@@ -1,0 +1,36 @@
+Tutorial 7 - Multi-CDN
+
+Definition:
+Multi-CDN means using more than one Content Delivery Network provider.
+
+Example:
+A global business may use Cloudflare and Akamai together.
+
+Features / Functionality:
+- traffic steering
+- geographic optimization
+- automatic failover
+- performance monitoring
+- content caching
+- load distribution
+
+Suitability:
+Suitable for:
+- global websites
+- e-commerce platforms
+- media streaming
+- high-traffic applications
+- mission-critical services
+
+Costs:
+- multiple CDN contracts
+- traffic management tools
+- monitoring cost
+- operational complexity
+
+Benefits:
+- higher availability
+- better global performance
+- improved fault tolerance
+- reduced dependency on one CDN
+- better user experience

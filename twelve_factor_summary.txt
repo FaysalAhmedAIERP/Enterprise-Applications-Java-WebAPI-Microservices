@@ -1,0 +1,18 @@
+Tutorial 5 Summary
+
+The Movie Microservice can follow the Twelve-Factor methodology by using:
+- one codebase
+- explicit dependencies
+- external configuration
+- replaceable backing services
+- separated build/release/run stages
+- stateless processes
+- port binding
+- horizontal concurrency
+- disposability
+- dev/prod parity
+- centralized logs
+- one-off admin processes
+
+Result:
+The system becomes easier to deploy, scale, maintain and operate in a cloud environment.

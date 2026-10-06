@@ -1,0 +1,56 @@
+Tutorial 5 - Twelve-Factor App Assessment
+Movie Microservice System
+
+1. Codebase
+The movie microservice should use one codebase maintained in version control.
+Example: The REST Controller, Service and Repository code are stored in one Git repository.
+
+2. Dependencies
+All required dependencies should be explicitly declared.
+Example: Java, REST framework and database libraries should be defined in Gradle or Maven.
+
+3. Config
+Configuration should be separated from source code.
+Example: Database URL, username, password and application port should be stored in environment variables.
+
+4. Backing Services
+External services such as databases should be treated as attached resources.
+Example: The movie database can be changed by updating configuration without changing application code.
+
+5. Build, Release, Run
+Build, release and runtime stages should be separated.
+Example:
+Build = compile application
+Release = combine build with configuration
+Run = execute the released application
+
+6. Processes
+The microservice should run as stateless processes.
+Example: Movie data should be stored in the persistent datastore, not in local application memory.
+
+7. Port Binding
+The application should expose its service through a network port.
+Example: Movie REST API can run on HTTP port 8080.
+
+8. Concurrency
+The application should support horizontal scaling.
+Example: Multiple Movie Service instances can run at the same time behind a load balancer.
+
+9. Disposability
+Application instances should start quickly and stop gracefully.
+Example: Containers can be restarted or replaced without affecting stored movie data.
+
+10. Dev/Prod Parity
+Development, testing and production environments should remain as similar as possible.
+Example: The same application build should be used in all environments with different configuration.
+
+11. Logs
+Logs should be treated as event streams.
+Example: Request, error and application logs should be sent to a centralized logging system.
+
+12. Admin Processes
+Administrative tasks should run as one-off processes using the same application environment.
+Example: Database migration or movie-data maintenance tasks should use the same codebase and configuration.
+
+Conclusion:
+Applying the Twelve-Factor methodology makes the Movie Microservice easier to deploy, scale, configure, monitor and operate in a cloud environment.

@@ -1,0 +1,22 @@
+Tutorial 3 - Web API Design
+
+1. Resource:
+A resource is an identifiable data object or collection exposed through a Web API.
+Example: /customers/1001 represents one customer.
+
+2. HTTP Verbs:
+GET = Read/Retrieve
+POST = Create
+PUT = Full Update/Replace
+PATCH = Partial Update
+DELETE = Remove
+
+3. JSON vs XML:
+JSON is lightweight and widely used in modern Web APIs.
+Example: {"id":1,"name":"Movie A"}
+
+XML is more verbose and supports structured document formats.
+Example: <movie><id>1</id><name>Movie A</name></movie>
+
+4. Weather API:
+The U.S. National Weather Service API provides endpoints for points, forecasts, stations, observations, alerts and related weather resources.

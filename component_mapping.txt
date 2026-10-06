@@ -1,0 +1,28 @@
+Tutorial 6 - Component Mapping
+
+Original Monolithic Component -> New Microservice
+
+Owner
+-> Owner Service Container
+-> Owner Database
+
+Pet
+-> Pet Service Container
+-> Pet Database
+
+Vet
+-> Vet Service Container
+-> Vet Database
+
+Visit
+-> Visit Service Container
+-> Visit Database
+
+Shared Web Entry Point
+-> API Gateway / Load Balancer
+
+Application Deployment
+-> Container Platform / Kubernetes
+
+Monitoring
+-> Centralized Logs + Metrics + Health Checks

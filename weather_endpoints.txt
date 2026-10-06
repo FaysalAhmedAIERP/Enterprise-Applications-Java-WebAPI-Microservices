@@ -1,0 +1,28 @@
+Tutorial 3 - Weather API Endpoint Formats
+
+Base API:
+https://api.weather.gov/
+
+1. Point Endpoint:
+https://api.weather.gov/points/{latitude},{longitude}
+
+2. Forecast Endpoint:
+[https://api.weather.gov/gridpoints/LWX/97,71/forecast]
+
+3. Hourly Forecast Endpoint:
+[https://api.weather.gov/gridpoints/LWX/97,71/forecast/hourly]
+
+4. Forecast Grid Data Endpoint:
+[https://api.weather.gov/gridpoints/LWX/97,71]
+
+5. Observation Stations Endpoint:
+[https://api.weather.gov/gridpoints/LWX/97,71/stations]
+
+6. Alerts Endpoint Example:
+https://api.weather.gov/alerts/active
+
+Live API Test Result:
+HTTP Status: 200 OK
+
+Test Request:
+GET https://api.weather.gov/points/38.8894,-77.0352

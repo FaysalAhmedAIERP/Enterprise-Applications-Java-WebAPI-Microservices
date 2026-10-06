@@ -1,0 +1,82 @@
+Tutorial 2 - Machine Setup, Tomcat and JSP Practical
+
+Objective:
+Set up the Java web development environment, configure Apache Tomcat, create a web project, create a JSP Hello World page and run the project successfully.
+
+Completed Steps:
+
+1. IntelliJ IDEA project opened.
+
+2. JDK configured.
+JDK used:
+Java 17
+
+3. Gradle configuration checked.
+
+4. Gradle compatibility issue identified.
+
+5. Compatible Gradle JVM configuration applied.
+
+6. Gradle reload completed successfully.
+
+7. Apache Tomcat 10.1.60 downloaded.
+
+8. Tomcat ZIP extracted.
+
+9. Tomcat Home configured in IntelliJ.
+
+10. Tomcat Application Server added successfully.
+
+11. Tomcat Run Configuration created.
+
+12. HTTP Port configured:
+8080
+
+13. Deployment artifact configured:
+Gradle : Web1.war (exploded)
+
+14. Application Context configured:
+/Web1
+
+15. Project structure verified:
+src
+  main
+    java
+    webapp
+      WEB-INF
+      index.html
+      hello.jsp
+
+16. JSP file created:
+hello.jsp
+
+17. JSP Content:
+
+Hello World
+
+My first JSP page is running on Apache Tomcat.
+
+18. Gradle build completed successfully.
+
+Build Result:
+BUILD SUCCESSFUL
+
+19. Tomcat server started successfully.
+
+20. Web application deployed successfully.
+
+21. Browser URL tested:
+
+http://localhost:8080/Web1/hello.jsp
+
+22. Browser Result:
+
+Hello World
+
+My first JSP page is running on Apache Tomcat.
+
+23. Final Result:
+JSP application successfully executed on Apache Tomcat.
+
+Tutorial 2 Status:
+Completed Successfully
